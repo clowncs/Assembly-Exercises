@@ -7,7 +7,7 @@ len2 db 11 dup(0)
 cur db 11 dup(0)
 remain db 11 dup(0)
 output_text db 32 dup(0) ; Chuỗi văn bản in hoa
-
+final db 32 dup(0)
 
 
 section .text
@@ -89,30 +89,111 @@ add al, 47
 mov [len2], al     
 
 
-; len 1 
-mov eax, 4          
-mov ebx, 1        
-mov ecx, len1  
-mov edx, 1          
-int 0x80
-
-; len 2
-mov eax, 4          
-mov ebx, 1        
-mov ecx, len2 
-mov edx, 1          
-int 0x80
-
-
 ; Xử lý chuỗi 
 xor eax, eax
 xor ebx, ebx
 mov al, [len1]
 mov bl, [len2]
 cmp al, bl
-jg len1lonhonlen2
+jge len1lonhonlen2
+
+;len 2 > len 1
+xor eax, 0
+xor ebx, 0
+
+mov esi, [len2]
+sub esi, 49
+mov [len2], esi
+mov al, [num2 + esi]
+sub al, '0'
+
+mov esi, [len1]
+sub esi, 49
+mov [len1], esi
+
+mov bl, [num1 + esi]
+sub bl, '0'
+
+; chia 
+add al,bl      
+mov bl, 10           
+div bl
+add ah, '0'
+; al là phân nguyên ah là phần dư 
+xor esi, esi
+mov [output_text + esi], ah
+push eax
+inc esi
+
+;suy thi vcl
+dmcs1:
+xor eax, eax
+xor ebx, ebx
+
+mov ecx, [len2]
+sub ecx, 1
+mov [len2], ecx
+mov al, [num2 + ecx]
+sub al, '0'
+
+mov ecx, [len1]
+sub ecx, 1
+mov [len1], ecx 
+mov bl, [num1 + ecx]
+sub bl, '0'
+
+add al,bl
+pop ebx
+add al, bl
+mov bl, 10
+div bl
+add ah, '0'
+mov [output_text + esi], ah
+inc esi
+push eax
+;check xem len 1 con khong
+mov edx, [len1]
+cmp edx, 0
+je _remainof1
+jmp dmcs1
 
 
+_remain2:
+pop ebx
+cmp bl, 0
+je endporn
+mov [output_text + esi], bl
+jmp endporn
+
+_remainof1:
+mov edx, [len1]
+mov ecx, [len2]
+cmp edx, ecx 
+je _remain2
+
+xor eax, eax
+xor ebx, ebx
+
+mov ecx, [len2]
+sub ecx, 1
+mov [len2], ecx
+mov al, [num2 + ecx]
+sub al, '0'
+pop ebx
+add al, bl
+mov bl, 10
+div bl
+add ah, '0'
+mov [output_text + esi], ah
+inc esi
+push eax
+;check xem len 2 con khong
+mov edx, [len2]
+cmp edx, 0
+je endporn
+jmp _remainof1
+
+; len 1 > len 2
 len1lonhonlen2:
 xor eax, 0
 xor ebx, 0
@@ -173,7 +254,20 @@ cmp edx, 0
 je _remain
 jmp dmcs
 
+
+_remain1:
+pop ebx
+cmp bl, 0
+je endporn
+mov [output_text + esi], bl
+jmp endporn
+
 _remain:
+mov edx, [len2]
+mov ecx, [len1]
+cmp edx, ecx 
+je _remain1
+
 xor eax, eax
 xor ebx, ebx
 
@@ -197,10 +291,40 @@ je endporn
 jmp _remain
 
 
+
+
+
+
+; reverse mang roi xuat
 endporn:
+mov ecx, 0
+find_length:
+    cmp byte [output_text + ecx], 0
+    je  end_find_length
+    inc ecx
+    jmp find_length
+end_find_length:
+    dec ecx
+    mov esi, output_text      
+    lea edi, [final + ecx]  
+reverse_loop:
+    cmp ecx, 0
+    jl end_reverse
+
+    mov al, [esi]
+    mov [edi], al
+
+    inc esi
+    dec edi
+    dec ecx
+
+    jmp reverse_loop
+
+end_reverse:
+
 mov eax, 4          
 mov ebx, 1        
-mov ecx, output_text 
+mov ecx, final 
 mov edx, 12          
 int 0x80
 
