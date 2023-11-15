@@ -6,7 +6,7 @@ len1 db 11 dup(0)
 len2 db 11 dup(0)
 cur db 11 dup(0)
 remain db 11 dup(0)
-output_text db 32 dup(0) ; Chuỗi văn bản in hoa
+output_text db 32 dup(0)
 final db 32 dup(0)
 
 
