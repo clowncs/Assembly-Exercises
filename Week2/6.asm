@@ -1,8 +1,8 @@
 section .data
 text db 256 dup(0)
-len dw 256
+len dd 256
 final db 256 dup(0)
-len1 dw 256
+len1 dd 256
 
 section .text
 global _start
@@ -12,7 +12,7 @@ _start:
 mov eax, 3          
 mov ebx, 2           
 mov ecx, text 
-mov edx, len       
+mov edx, [len]       
 int 0x80    
 call reversestring
 
@@ -20,7 +20,7 @@ print:
 mov eax, 4
 mov ebx, 1
 mov ecx, final
-mov edx, len1
+mov edx, [len1]
 int 0x80    
 jmp exit
 
