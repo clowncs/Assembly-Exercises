@@ -3,16 +3,13 @@ text db 32   ; Độ dài tối đa của chuỗi văn bản
 input_text db 32 dup(0)  ; Chuỗi văn bản nhập từ người dùng
 output_text db 32 dup(0) ; Chuỗi văn bản in hoa
 
-section .bss
-c db 0   ; Biến để lưu ký tự hiện tại
-
 section .text
 global _start
 
 _start:
 ; Đọc chuỗi văn bản từ người dùng
-mov eax, 0          
-mov ebx, 0           
+mov eax, 3          
+mov ebx, 2           
 mov ecx, input_text 
 mov edx, text       
 int 0x80            
