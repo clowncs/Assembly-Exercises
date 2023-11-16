@@ -1,9 +1,8 @@
 section .data
-text db 255 dup(0)
-len db 255
-len1 db 255 dup(0)
-final db 255 dup(0)
-
+text db 256 dup(0)
+len dw 256
+final db 256 dup(0)
+len1 dw 256
 
 section .text
 global _start
@@ -21,7 +20,7 @@ print:
 mov eax, 4
 mov ebx, 1
 mov ecx, final
-mov edx, 255
+mov edx, len1
 int 0x80    
 jmp exit
 
@@ -51,6 +50,7 @@ reverse_loop:
     jmp reverse_loop
 
 end_reverse:
+
 ret
 
 exit:
