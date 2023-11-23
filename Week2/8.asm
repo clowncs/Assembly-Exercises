@@ -193,7 +193,7 @@ push eax
 ;check xem len 2 con khong
 mov edx, [len2]
 cmp edx, 0
-je endporn
+je _remain2
 jmp _remainof1
 
 ; len 1 > len 2
@@ -297,7 +297,7 @@ push eax
 ;check xem len 1 con khong
 mov edx, [len1]
 cmp edx, 0
-je endporn
+je _remain1
 jmp _remain
 
 
