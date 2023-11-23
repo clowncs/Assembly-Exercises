@@ -4,8 +4,6 @@ num1 db 32 dup(0)  ; Chuỗi văn bản nhập từ người dùng
 num2 db 32 dup(0)  ; Chuỗi văn bản nhập từ người dùng
 len1 db 11 dup(0)
 len2 db 11 dup(0)
-cur db 11 dup(0)
-remain db 11 dup(0)
 output_text db 32 dup(0) ; Chuỗi văn bản in hoa
 final db 32 dup(0)
 
