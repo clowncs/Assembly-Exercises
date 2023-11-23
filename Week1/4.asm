@@ -6,7 +6,7 @@ len1 db 11 dup(0)
 len2 db 11 dup(0)
 cur db 11 dup(0)
 remain db 11 dup(0)
-output_text db 32 dup(0)
+output_text db 32 dup(0) ; Chuỗi văn bản in hoa
 final db 32 dup(0)
 
 
@@ -124,6 +124,10 @@ xor esi, esi
 mov [output_text + esi], ah
 push eax
 inc esi
+mov edx, [len1]
+cmp edx, 0
+je _remainof1
+jmp dmcs1
 
 ;suy thi vcl
 dmcs1:
@@ -162,6 +166,7 @@ _remain2:
 pop ebx
 cmp bl, 0
 je endporn
+add bl, '0'
 mov [output_text + esi], bl
 jmp endporn
 
@@ -221,6 +226,12 @@ xor esi, esi
 mov [output_text + esi], ah
 push eax
 inc esi
+mov edx, [len2]
+cmp edx, 0
+je _remain
+jmp dmcs
+
+
 
 ;suy thi vcl
 dmcs:
@@ -259,6 +270,7 @@ _remain1:
 pop ebx
 cmp bl, 0
 je endporn
+add bl, '0'
 mov [output_text + esi], bl
 jmp endporn
 
@@ -325,7 +337,7 @@ end_reverse:
 mov eax, 4          
 mov ebx, 1        
 mov ecx, final 
-mov edx, 12          
+mov edx, 32          
 int 0x80
 
 
