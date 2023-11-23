@@ -4,8 +4,6 @@ num1 db 32 dup(0)  ; Chuỗi văn bản nhập từ người dùng
 num2 db 32 dup(0)  ; Chuỗi văn bản nhập từ người dùng
 len1 db 11 dup(0)
 len2 db 11 dup(0)
-cur db 11 dup(0)
-remain db 11 dup(0)
 output_text db 32 dup(0) ; Chuỗi văn bản in hoa
 final db 32 dup(0)
 
@@ -124,6 +122,10 @@ xor esi, esi
 mov [output_text + esi], ah
 push eax
 inc esi
+mov edx, [len1]
+cmp edx, 0
+je _remainof1
+jmp dmcs1
 
 ;suy thi vcl
 dmcs1:
@@ -162,6 +164,7 @@ _remain2:
 pop ebx
 cmp bl, 0
 je endporn
+add bl, '0'
 mov [output_text + esi], bl
 jmp endporn
 
@@ -221,6 +224,12 @@ xor esi, esi
 mov [output_text + esi], ah
 push eax
 inc esi
+mov edx, [len2]
+cmp edx, 0
+je _remain
+jmp dmcs
+
+
 
 ;suy thi vcl
 dmcs:
@@ -259,6 +268,7 @@ _remain1:
 pop ebx
 cmp bl, 0
 je endporn
+add bl, '0'
 mov [output_text + esi], bl
 jmp endporn
 
