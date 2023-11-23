@@ -307,6 +307,22 @@ jmp _remain
 
 ; reverse mang roi xuat
 endporn:
+call reverse_string
+
+end_reverse:
+mov eax, 4          
+mov ebx, 1        
+mov ecx, final 
+mov edx, 32          
+int 0x80
+
+
+mov eax, 1            
+xor ebx, ebx         
+int 0x80
+
+reverse_string:
+
 mov ecx, 0
 find_length:
     cmp byte [output_text + ecx], 0
@@ -329,16 +345,4 @@ reverse_loop:
     dec ecx
 
     jmp reverse_loop
-
-end_reverse:
-
-mov eax, 4          
-mov ebx, 1        
-mov ecx, final 
-mov edx, 32          
-int 0x80
-
-
-mov eax, 1            
-xor ebx, ebx         
-int 0x80
+ret
