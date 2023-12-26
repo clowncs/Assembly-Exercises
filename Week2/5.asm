@@ -156,4 +156,3 @@ returntotal:
 mov [total], ecx
 ret
 
-printable_convert:
